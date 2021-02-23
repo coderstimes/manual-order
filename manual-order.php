@@ -28,7 +28,7 @@ class QuickOrder {
     public function create_dashboard_menu ( ) {
         add_menu_page(
             __('Manual Order Create', 'mofw'),
-            __('WC Manual Order', 'mofw'),
+            __('Manual Order', 'mofw'),
             'manage_woocommerce',
             'wc-manual-order',
             [$this,'mofw_admin_page'],

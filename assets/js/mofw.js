@@ -59,9 +59,9 @@
             if(!optimage ){
                 return opt.text;               
             } else if(opt.selected) {
-                return $( '<span style="display:flex;align-items:center;"><img src="' + optimage + '" width="30px" style="margin-right:10px;" /> ' + opt.text + '</span>');
+                return $( '<span style="display:flex;align-items:center;"><img src="' + optimage + '" height="30px" width="30px" style="margin-right:10px;" /> ' + opt.text + '</span>');
             }else {
-                return $( '<span style="display:flex;align-items:center;"><img src="' + optimage + '" width="50px" style="margin-right:10px;" /> ' + opt.text + '</span>');
+                return $( '<span style="display:flex;align-items:center;"><img src="' + optimage + '" height="50px" width="50px" style="margin-right:10px;" /> ' + opt.text + '</span>');
             }
         };
 

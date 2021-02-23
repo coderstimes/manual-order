@@ -1,6 +1,6 @@
 <div class="mofw-form-wrapper">
     <div class="mofw-form-title">
-        <h4><?php _e('Quick Order', 'mofw'); ?></h4>
+        <h4><?php _e('Woocommerce Manual Order', 'mofw'); ?></h4>
     </div>
     <div class='mofw-form-container'>
         <div class="mofw-form">
@@ -41,7 +41,7 @@
                     </div>
 
                     <div class='pure-control-group'>
-                        <?php $label = __('Discount in Taka', 'mofw'); ?>
+                        <?php $label = __('Discount in ', 'mofw') . get_option( 'woocommerce_currency' ) . ' ('.get_woocommerce_currency_symbol() . ')' ;  ?>
                         <label id="discount-label" for="discount"><?php echo $label; ?></label>
                         <input class='mofw-control' name="discount" id="discount" type='text' placeholder='<?php echo $label; ?>'>
                     </div>
@@ -86,8 +86,7 @@
                 <?php wp_nonce_field('mofw_form', 'mofw_form_nonce'); ?>
             </form>
         </div>
-        <div class="mofw-info">
-        </div>
+        <div class="mofw-info"> </div>
         <div class="mofw-clearfix"></div>
     </div>
 
