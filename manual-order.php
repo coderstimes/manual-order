@@ -12,9 +12,12 @@ Text Domain: mofw
 
 defined( 'ABSPATH' ) || exit;
 
-class QuickOrder {
+class CodersManualOrder {
 
     public function __construct ( ) {
+
+        register_activation_hook( __FILE__, [ $this, 'activate' ] );
+        register_deactivation_hook( __FILE__, [ $this, 'deactivate' ] );
 
         add_action('admin_menu', [$this,'create_dashboard_menu']);
         add_action('admin_enqueue_scripts', [$this,'mofw_scripts'] );
@@ -23,6 +26,10 @@ class QuickOrder {
         add_action('wp_ajax_mofw_fetch_user', [$this,'mofw_fetch_user'] );
         add_action('mofw_order_processing_complete',[$this,'order_processing_complete']);
 
+    }
+
+    public function activate ( ) {
+        add_option('mofw_active',time());
     }
 
     public function create_dashboard_menu ( ) {
@@ -34,6 +41,10 @@ class QuickOrder {
             [$this,'mofw_admin_page'],
             'dashicons-cart'
         );
+    }
+
+    public function deactivate ( ) {
+        add_option('mofw_deactive',time());
     }
 
     public function mofw_scripts( $hook ) {
@@ -55,7 +66,7 @@ class QuickOrder {
                 'dc' => __('Discount Coupon', 'mofw'),
                 'cc' => __('Coupon Code', 'mofw'),
                 'dt' => __('Discount In Taka', 'mofw'),
-                'pt' => __('WooCommerce Quick Order', 'mofw'), //plugin title
+                'pt' => __('WooCommerce Manual Order', 'mofw'), //plugin title
             ));
             add_thickbox();
         }
@@ -193,4 +204,4 @@ class QuickOrder {
 }
 
 
-new QuickOrder();
+new CodersManualOrder();

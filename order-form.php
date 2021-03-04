@@ -1,3 +1,6 @@
+<?php 
+defined( 'ABSPATH' ) || exit;
+?>
 <div class="mofw-form-wrapper">
     <div class="mofw-form-title">
         <h4><?php _e('Woocommerce Manual Order', 'mofw'); ?></h4>

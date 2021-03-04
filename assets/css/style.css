@@ -1,8 +1,5 @@
-/*!
-Pure v1.0.1
-Copyright 2013 Yahoo!
-Licensed under the BSD License.
-https://github.com/pure-css/pure/blob/master/LICENSE.md
+/*
+* coderstime
 */
 .pure-form input[type="color"],
 .pure-form input[type="date"],
@@ -288,6 +285,7 @@ https://github.com/pure-css/pure/blob/master/LICENSE.md
 .mofw-form-title {
   background-color: #222;
   color: #eee;
+  text-align: center;
 }
 
 .mofw-form-title h4 {
