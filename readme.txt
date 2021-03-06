@@ -1,39 +1,51 @@
 === Manual Order For WooCommerce ===
-Contributors: coderstime
-Donate link: 
-Tags: woocommerce, order, cart, discount
-Requires at least: 4.0
-Tested up to: 5.4
-Stable tag: trunk
-Requires PHP: 5.6
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+=== Manual Order ===
+Contributors: coderstime, lincolndu
+Tags: manual-order, order, woocommerce, cart, discount
+Requires at least: 4.9 or higher
+Tested up to: 5.6
+Requires PHP: 5.6 or higher
+Stable tag: 1.0.0
+License: GPLv2 (or later)
+License URI: https://www.gnu.org/licenses/gpl-3.0.en.html Stable tag: 1.0.0
 
 Save your time by quickly creating orders for your woocommerce powered shops, and for existing or new users. Apply a flat discount or a coupon code instantly. 
 
 == Description ==
+Save your time by quickly creating orders for your woocommerce powered shops, and for existing or new users. Apply a flat discount or a coupon code instantly. Create a quick order from the admin side without the requirement for the users registration or login system. 
 
-Save your time by quickly creating orders for your woocommerce powered shops, and for existing or new users. Apply a flat discount or a coupon code instantly. 
+This plugin would help users to avoid going through the hectic process of opening an account and buying products themselves. The admins of the website would be able to handle the process themselves. Often this would be helpful for older and disable people to be able to make purchase online. 
+
+At a glance, this plugin adds the following:
+
+The form would require an users email, first and last name, password, phone number and product item or product list. Once the first purchase is done, the user will be able to manage the account themselves or modify settings themselves. 
+
+This plugin allows admin to choose from different products, generate a random password or even apply coupon if available. 
+
+By default, this plugin hides all functionality available in the new block editor (“Gutenberg”).
 
 == Installation ==
-
-Installation is fairly straight-forward. Install it from the WordPress plugin repository.
-
+For installation, it is quite easy. Anyone can install it from the the plugin repository and afterwards can be found in the install new plugin section. Once installed, it will require activation from the admin. Later, the plugin form can be found in the admin dashboard as manual order option underneath the settings option. 
 
 == Frequently Asked Questions ==
+= What this plugin for? =
 
-= Is it compatible with WooCommerce 2.x? =
+It's mainly a plugin to quickly create orders for your woocommerce powered shops, and for existing or new users or even apply a flat discount or a coupon code instantly.
 
-Yes
+= Whats the facility? =
 
-= Is it compatible with WooCommerce 3.x? =
+Admins can quickly create an account for an user and orders product manually. 
+ 
+= What is Manual Order plugin ? =
 
-Yes!
+Manual order plugin would help users to avoid going through the hectic process of opening an account and buying products themselves. The admins of the website would be able to handle the process themselves. Often this would be helpful for older and disable people to be able to make purchase online. 
 
+== Screenshots ==
+1. Manual order form
+2. Manual order icon
+3. Confirmation for order with an order number
 
 == Changelog ==
-= 2.0.0 =
-* April 25, 2020 - Initial Release
-
-
-
+1.0.0 
+*March 06, 2021 - Initial Release

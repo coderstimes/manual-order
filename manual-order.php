@@ -2,10 +2,10 @@
 /*
 Plugin Name: Manual Order
 Plugin URI: 
-Description: Manualy create WooCommerce order for existing and new customers from Dashboard menu. 
-Version: 2.0.0
+Description: Manually create quick WooCommerce order for existing and new customers from Dashboard menu. 
+Version: 1.0.0
 Author: Coderstime
-Author URI: https://coderstimes.com
+Author URI: https://profiles.wordpress.org/coderstime/
 License: GPLv2 or later
 Text Domain: mofw
 */
