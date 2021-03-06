@@ -52,7 +52,7 @@ class CodersManualOrder {
         if ( 'toplevel_page_wc-manual-order' == $hook ) {
 
             $asset_file_link = plugins_url( '', __FILE__ );
-            $folder_path= __DIR__ ;
+            $folder_path = __DIR__ ;
 
             wp_enqueue_style('select2', $asset_file_link . '/../woocommerce/assets/css/select2.css', array(), filemtime($folder_path.'/../woocommerce/assets/css/select2.css'));
             wp_enqueue_style('mofw-style', $asset_file_link . '/assets/css/style.css', array(), filemtime($folder_path.'/assets/css/style.css'));            
