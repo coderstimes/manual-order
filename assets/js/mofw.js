@@ -7,7 +7,8 @@
             });
         });
         $("#coupon").on('click', function () {
-            if ($(this).attr('checked')) {
+
+            if ($(this).is(':checked')) {
                 $("#discount-label").html(mofw.dc);
                 $("#discount").attr("placeholder", mofw.cc);
             } else {
@@ -17,13 +18,11 @@
         });
 
         $("#email").on('blur', function () {
-            if($(this).val()==''){
-                return;
-            }
+            if( $(this).val() == '' ){ return; }
+
             $("#first_name").val('');
             $("#last_name").val('');
             let email = $(this).val();
-            //alert(mofw.ajax_url);
             $.post(mofw.ajax_url, { 'action': 'mofw_fetch_user', 'email': email, 'nonce': mofw.nonce }, function (data) {
                 if ($("#first_name").val() == '') {
                     $("#first_name").val(data.fn);
@@ -67,7 +66,17 @@
 
 
         if ($('#mofw-edit-button').length > 0) {
-            tb_show(mofw.pt, "#TB_inline?inlineId=mofw-modal&width=700");
+            tb_show( $('.mofw-form-title h4').text(), "#TB_inline?inlineId=mofw-modal&width=700");
         }
+
+        $( 'body' ).on( 'thickbox:removed', function() {
+            var url = window.location.href;
+            var a = url.indexOf("?");
+            var b = url.substring(a);
+            var c = url.replace(b,"?page=wc-manual-order");
+            window.history.pushState({}, document.title, c );
+        });
+
+
     });
 })(jQuery);

@@ -49,14 +49,14 @@ class CodersManualOrder {
 
     public function mofw_scripts( $hook ) {
 
-        if ('toplevel_page_wc-manual-order' == $hook) {
+        if ( 'toplevel_page_wc-manual-order' == $hook ) {
 
             $asset_file_link = plugins_url( '', __FILE__ );
             $folder_path= __DIR__ ;
 
             wp_enqueue_style('select2', $asset_file_link . '/../woocommerce/assets/css/select2.css', array(), filemtime($folder_path.'/../woocommerce/assets/css/select2.css'));
             wp_enqueue_style('mofw-style', $asset_file_link . '/assets/css/style.css', array(), filemtime($folder_path.'/assets/css/style.css'));            
-            wp_enqueue_script('select2', $asset_file_link . '/../woocommerce/assets/js/select2/select2.js', array('jquery'), filemtime($folder_path.'/../woocommerce/assets/js/select2/select2.full.js'), true);
+            wp_enqueue_script('select2', $asset_file_link . '/../woocommerce/assets/js/select2/select2.js', array('jquery'), filemtime($folder_path.'/../woocommerce/assets/js/select2/select2.js'), true);
             wp_enqueue_script('mofw-script', $asset_file_link . '/assets/js/mofw.js', array('jquery', 'thickbox'), filemtime($folder_path.'/assets/js/mofw.js'), true);
 
             $nonce = wp_create_nonce('mofw');
@@ -65,8 +65,7 @@ class CodersManualOrder {
                 'ajax_url' => admin_url('admin-ajax.php'),
                 'dc' => __('Discount Coupon', 'mofw'),
                 'cc' => __('Coupon Code', 'mofw'),
-                'dt' => __('Discount In Taka', 'mofw'),
-                'pt' => __('WooCommerce Manual Order', 'mofw'), //plugin title
+                'dt' => __('Discount in ' . get_option( 'woocommerce_currency' ), 'mofw') . ' ('.get_woocommerce_currency_symbol() . ')',
             ));
             add_thickbox();
         }
@@ -195,7 +194,7 @@ class CodersManualOrder {
 
     public function order_processing_complete ( $order_id ) {
         $order = wc_get_order($order_id);
-        $message =  __("<p>Your order number %s is now complete. Please click the next button to edit this order</p><p>%s</p>", 'mofw');
+        $message =  __("<p>Your order number %s is now complete. Please click the next button to edit this order</p><p class='text-center'>%s</p>", 'mofw');
         $order_button = sprintf("<a target='_blank' href='%s' id='mofw-edit-button' class='button button-primary button-hero'>%s %s</a>", $order->get_edit_order_url(), __('Edit Order # ', 'mofw'), $order_id);
 
         printf($message, $order_id, $order_button);
