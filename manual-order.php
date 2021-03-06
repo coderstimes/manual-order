@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Manual Order
-Plugin URI: 
+Plugin URI: https://github.com/coderstimes/manual-order
 Description: Manually create quick WooCommerce order for existing and new customers from Dashboard menu. 
 Version: 1.0.0
 Author: Coderstime
@@ -13,6 +13,13 @@ Text Domain: mofw
 defined( 'ABSPATH' ) || exit;
 
 class CodersManualOrder {
+
+    /**
+     *
+     * construct method description
+     *
+     */
+    
 
     public function __construct ( ) {
 
@@ -28,9 +35,23 @@ class CodersManualOrder {
 
     }
 
+    /**
+     *
+     * run when plugin install
+     * install time store on option table
+     */
+    
+
     public function activate ( ) {
         add_option('mofw_active',time());
     }
+
+    /**
+     *
+     * Create Manual order menu with cart icon
+     *
+     */
+    
 
     public function create_dashboard_menu ( ) {
         add_menu_page(
@@ -43,9 +64,23 @@ class CodersManualOrder {
         );
     }
 
+    /**
+     *
+     * run when deactivate the plugin
+     * store deactivate time on database option table
+     */
+    
+
     public function deactivate ( ) {
         add_option('mofw_deactive',time());
     }
+
+    /**
+     *
+     * run css and javascript code with thickbox for modal
+     *
+     */
+    
 
     public function mofw_scripts( $hook ) {
 
@@ -71,9 +106,23 @@ class CodersManualOrder {
         }
     }
 
+    /**
+     *
+     * Load html design form
+     *
+     */
+    
+
     public function mofw_admin_page() {
         include('order-form.php');
     }
+
+    /**
+     *
+     * Generate password for new user
+     *
+     */
+    
 
     public function mofw_password_generate () {
         $nonce = sanitize_text_field($_POST['nonce']);
@@ -83,6 +132,13 @@ class CodersManualOrder {
         }
         die();
     }
+
+    /**
+     *
+     * after submitting form run this method
+     *
+     */
+    
 
     public function post_mofw_form () {
         if (isset($_POST['submit'])) {
@@ -94,6 +150,13 @@ class CodersManualOrder {
             );
         }
     }
+
+    /**
+     *
+     * Process submitted data and return order id
+     *
+     */
+    
 
     public function mofw_process_submission() {
         $mofw_order_identifier = sanitize_text_field($_POST['mofw_identifier']);
@@ -165,6 +228,13 @@ class CodersManualOrder {
         }
     }
 
+    /**
+     *
+     * Get user by email
+     *
+     */
+    
+
     public function mofw_fetch_user ( ) {
         $nonce = sanitize_text_field($_POST['nonce']);
         $email = strtolower(sanitize_text_field($_POST['email']));
@@ -191,6 +261,13 @@ class CodersManualOrder {
         }
         die();
     }
+
+    /**
+     *
+     * Thickbox modal data process here
+     *
+     */
+    
 
     public function order_processing_complete ( $order_id ) {
         $order = wc_get_order($order_id);

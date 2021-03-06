@@ -10,36 +10,4 @@
 /*
 * coderstime
 */
-#ctss-modal {
-  display: none;
-}
-
-#TB_ajaxContent {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.ctss-modal-content p {
-  font-size: 20px;
-}
-
-.note_area{margin-top: 20px;}
-.select2-container{
-  width: 100% !important;
-}
-
-.select2-selection {
-  font-size: 14px;
-  outline: 0;
-  min-height: 48px;
-  text-align: left;
-}
-
-.select2-selection__rendered {
-  margin: 10px;
-}
-
-.select2-selection__arrow {
-  margin: 10px;
-}
+#ctss-modal{display:none}#TB_ajaxContent{display:flex;justify-content:center;align-items:center}.ctss-modal-content p{font-size:20px}.note_area{margin-top:20px}.select2-container{width:100%!important}.select2-selection{font-size:14px;outline:0;min-height:48px;text-align:left}.select2-selection__rendered{margin:10px}.select2-selection__arrow{margin:10px}

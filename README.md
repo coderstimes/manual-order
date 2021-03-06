@@ -1,5 +1,4 @@
-# manual-order
- Woocommerce manual order for admin and shop manager
+=== Manual Order For WooCommerce ===
 
 === Manual Order ===
 Contributors: coderstime, lincolndu
