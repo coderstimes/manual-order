@@ -78,7 +78,7 @@ defined( 'ABSPATH' ) || exit;
                                 <?php
                                 $products = wc_get_products(array('post_status' => 'published', 'posts_per_page' => -1));
                                 foreach ($products as $product) { ?>
-                                    <option data-thumbnail='<?=get_the_post_thumbnail_url($product->get_ID()) ?>' value='<?php echo $product->get_ID(); ?>'><?php echo $product->get_Name(); ?></option>
+                                    <option data-thumbnail='<?php echo get_the_post_thumbnail_url($product->get_ID()) ?>' value='<?php echo $product->get_ID(); ?>'><?php echo $product->get_Name(); ?></option>
                                 <?php } ?>
                             </select>
                         </div>                        

@@ -6,11 +6,21 @@ Description: Manually create quick WooCommerce order for existing and new custom
 Version: 1.0.0
 Author: Coderstime
 Author URI: https://profiles.wordpress.org/coderstime/
+Domain Path: /languages
 License: GPLv2 or later
 Text Domain: mofw
 */
 
-defined( 'ABSPATH' ) || exit;
+// don't call the file directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+/**
+ * CodersManualOrder class
+ *
+ * The class that holds the entire CodersManualOrder plugin
+ *
+ * @author Coders Time <coderstime@gmail.com>
+ */
 
 class CodersManualOrder {
 
@@ -26,12 +36,19 @@ class CodersManualOrder {
         register_activation_hook( __FILE__, [ $this, 'activate' ] );
         register_deactivation_hook( __FILE__, [ $this, 'deactivate' ] );
 
+         // Localize our plugin
+        add_action( 'init', [ $this, 'localization_setup' ] );
+
+        add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), [ $this, 'action_links' ] );
+
         add_action('admin_menu', [$this,'create_dashboard_menu']);
         add_action('admin_enqueue_scripts', [$this,'mofw_scripts'] );
         add_action('wp_ajax_mofw_genpw', [ $this,'mofw_password_generate']);
         add_action('admin_post_mofw_form', [$this,'post_mofw_form'] );
         add_action('wp_ajax_mofw_fetch_user', [$this,'mofw_fetch_user'] );
         add_action('mofw_order_processing_complete',[$this,'order_processing_complete']);
+
+        
 
     }
 
@@ -76,12 +93,19 @@ class CodersManualOrder {
     }
 
     /**
+     * Initialize plugin for localization
+     *
+     * @uses load_plugin_textdomain()
+     */
+    public function localization_setup() {
+        load_plugin_textdomain( 'mofw', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+    }
+
+    /**
      *
      * run css and javascript code with thickbox for modal
      *
      */
-    
-
     public function mofw_scripts( $hook ) {
 
         if ( 'toplevel_page_wc-manual-order' == $hook ) {
@@ -233,8 +257,6 @@ class CodersManualOrder {
      * Get user by email
      *
      */
-    
-
     public function mofw_fetch_user ( ) {
         $nonce = sanitize_text_field($_POST['nonce']);
         $email = strtolower(sanitize_text_field($_POST['email']));
@@ -250,13 +272,15 @@ class CodersManualOrder {
                     'pn' => get_user_meta($user->ID, 'phone_number', true)
                 ));
             } else {
-                echo json_encode(array(
-                    'error' => true,
-                    'id' => 0,
-                    'fn' => __('Not Found', 'mofw'),
-                    'ln' => __('Not Found', 'mofw'),
-                    'pn' => ''
-                ));
+                echo json_encode(
+                    [
+                        'error' => true,
+                        'id' => 0,
+                        'fn' => __('Not Found', 'mofw'),
+                        'ln' => __('Not Found', 'mofw'),
+                        'pn' => ''
+                    ]
+                );
             }
         }
         die();
@@ -275,6 +299,22 @@ class CodersManualOrder {
         $order_button = sprintf("<a target='_blank' href='%s' id='mofw-edit-button' class='button button-primary button-hero'>%s %s</a>", $order->get_edit_order_url(), __('Edit Order # ', 'mofw'), $order_id);
 
         printf($message, $order_id, $order_button);
+    }
+
+
+    /**
+     * Show action links on the plugin screen
+     *
+     * @param mixed $links
+     * @return array
+     */
+    public function action_links( $links ) {
+        return array_merge(
+            [
+                '<a href="' . admin_url( 'admin.php?page=wc-manual-order' ) . '">' . __( 'Settings', 'mofw' ) . '</a>',
+                '<a href="' . esc_url( 'https://www.facebook.com/coderstime' ) . '">' . __( 'Support', 'mofw' ) . '</a>',
+                '<a href="' . esc_url( 'https://wordpress.org/support/plugin/manual-order/reviews/#new-post' ) . '">' . __( 'Review', 'mofw' ) . '</a>',
+            ], $links );
     }
 
 }
