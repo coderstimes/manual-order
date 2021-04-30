@@ -4,7 +4,7 @@
 Contributors: coderstime, lincolndu
 Tags: manual-order, order, woocommerce, cart, discount
 Requires at least: 4.9 or higher
-Tested up to: 5.6
+Tested up to: 5.7
 Requires PHP: 5.6 or higher
 Stable tag: 1.0.0
 License: GPLv2 (or later)

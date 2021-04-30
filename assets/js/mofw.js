@@ -62,7 +62,7 @@
             }else {
                 return $( '<span style="display:flex;align-items:center;"><img src="' + optimage + '" height="50px" width="50px" style="margin-right:10px;" /> ' + opt.text + '</span>');
             }
-        };
+        }
 
 
         if ($('#mofw-edit-button').length > 0) {
