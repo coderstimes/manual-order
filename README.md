@@ -4,9 +4,9 @@
 Contributors: coderstime, lincolndu
 Tags: manual-order, order, woocommerce, cart, discount
 Requires at least: 4.9 or higher
-Tested up to: 5.6
+Tested up to: 5.7
 Requires PHP: 5.6 or higher
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 (or later)
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html Stable tag: 1.0.0
 
@@ -47,5 +47,11 @@ Manual order plugin would help users to avoid going through the hectic process o
 3. Confirmation for order with an order number
 
 == Changelog ==
-1.0.0 
-*March 06, 2021 - Initial Release
+
+=1.1.0=
+* Multiple product order feature
+* hide password panel when a email user exist in system
+* address keyword deduct from name
+
+=1.0.0=
+* March 06, 2021 - Initial Release

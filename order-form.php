@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) || exit;
         <div class="row">
             <div class="col-md-8 m-auto">
 
-                <div class="mofw-form-title text-center bg-secondary clearfix py-2 mt-5 text-white rounded">
+                <div class="mofw-form-title text-center bg-success clearfix py-2 mt-5 text-white rounded">
                     <h4><?php _e('Woocommerce Manual Order', 'mofw'); ?></h4>
                 </div>
 
@@ -24,17 +24,17 @@ defined( 'ABSPATH' ) || exit;
                         <?php $label = __('First Name', 'mofw'); ?>
                         <label for="first_name" class="form-label"> <?php echo $label; ?> </label>
                         <input type="text" name="first_name" class="form-control" id="first_name" aria-describedby="first_nameHelp" placeholder="<?php echo $label; ?>">
-                        <div id="first_nameHelp" class="form-text"> <?php _e('Your customer first name address', 'mofw'); ?> </div>
+                        <div id="first_nameHelp" class="form-text"> <?php _e('Your customer first name', 'mofw'); ?> </div>
                     </div>
 
                     <div class="mb-3">
                         <?php $label = __('Last Name', 'mofw'); ?>
                         <label for="last_name" class="form-label"> <?php echo $label; ?> </label>
                         <input type="text" name="last_name" class="form-control" id="last_name" aria-describedby="last_nameHelp" placeholder="<?php echo $label; ?>">
-                        <div id="last_nameHelp" class="form-text"> <?php _e('Your customer last name address', 'mofw'); ?> </div>
+                        <div id="last_nameHelp" class="form-text"> <?php _e('Your customer last name', 'mofw'); ?> </div>
                     </div>
 
-                    <div class="row mb-3">
+                    <div class="row mb-3" id="password_container">
                         <div class="col-md-8 position-relative">
                             <?php $label = __('Password', 'mofw'); ?>
                             <label for="password" class="form-label"> <?php echo $label; ?> </label>
@@ -54,6 +54,7 @@ defined( 'ABSPATH' ) || exit;
                         <label for="phone" class="form-label"> <?php echo $label; ?> </label>
                         <input type="text" name="phone" class="form-control" id="phone" aria-describedby="phoneHelp" placeholder="<?php echo $label; ?>">
                         <div id="phoneHelp" class="form-text"> <?php _e('Your customer phone number', 'mofw'); ?> </div>
+                        <input type="hidden" id="customer_id" name="customer_id">
                     </div>
 
                     <div class="mb-3">
@@ -72,12 +73,11 @@ defined( 'ABSPATH' ) || exit;
                     <div class="row mb-3">
                         <div class="col-md-12 position-relative">
                             <?php $label = __('Product List', 'mofw'); ?>
-                            <label for='item'><?php echo $label; ?></label>
-                            <select class='select_product mt-1' name='item' id='item'>
-                                <option value="0"><?php _e('Select One', 'mofw'); ?></option>
+                            <label for='item' class="mb-2"><?php echo $label; ?></label>
+                            <select multiple class='select_product mt-1' name='item[]' id='item'>
                                 <?php
                                 $products = wc_get_products(array('post_status' => 'published', 'posts_per_page' => -1));
-                                foreach ($products as $product) { ?>
+                                foreach ( $products as $product ) { ?>
                                     <option data-thumbnail='<?php echo get_the_post_thumbnail_url($product->get_ID()) ?>' value='<?php echo $product->get_ID(); ?>'><?php echo $product->get_Name(); ?></option>
                                 <?php } ?>
                             </select>

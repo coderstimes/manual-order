@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: Manual Order
-Plugin URI: https://github.com/coderstimes/manual-order
+Plugin Name: Manual Order for Woocommerce
+Plugin URI: https://wordpress.org/plugins/manual-order/
 Description: Manually create quick WooCommerce order for existing and new customers from Dashboard menu. 
-Version: 1.0.0
+Version: 1.1.0
 Author: Coderstime
 Author URI: https://profiles.wordpress.org/coderstime/
 Domain Path: /languages
@@ -22,15 +22,13 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Coders Time <coderstime@gmail.com>
  */
 
-class CodersManualOrder {
+final class CodersManualOrder {
 
     /**
      *
      * construct method description
      *
      */
-    
-
     public function __construct ( ) {
 
         register_activation_hook( __FILE__, [ $this, 'activate' ] );
@@ -48,8 +46,6 @@ class CodersManualOrder {
         add_action('wp_ajax_mofw_fetch_user', [$this,'mofw_fetch_user'] );
         add_action('mofw_order_processing_complete',[$this,'order_processing_complete']);
 
-        
-
     }
 
     /**
@@ -58,27 +54,10 @@ class CodersManualOrder {
      * install time store on option table
      */
     
-
     public function activate ( ) {
-        add_option('mofw_active',time());
-    }
-
-    /**
-     *
-     * Create Manual order menu with cart icon
-     *
-     */
-    
-
-    public function create_dashboard_menu ( ) {
-        add_menu_page(
-            __('Manual Order Create', 'mofw'),
-            __('Manual Order', 'mofw'),
-            'manage_woocommerce',
-            'wc-manual-order',
-            [$this,'mofw_admin_page'],
-            'dashicons-cart'
-        );
+        if ( false === get_option('mofw_active') ) {
+           add_option('mofw_active',[time(), '1.1.0']);
+        }
     }
 
     /**
@@ -109,6 +88,7 @@ class CodersManualOrder {
     public function mofw_scripts( $hook ) {
 
         if ( 'toplevel_page_wc-manual-order' == $hook ) {
+            add_filter( 'admin_footer_text', [$this,'mofw_copyright_text'] );
 
             $asset_file_link = plugins_url( '', __FILE__ );
             $folder_path = __DIR__ ;
@@ -118,10 +98,10 @@ class CodersManualOrder {
             wp_enqueue_script('select2', $asset_file_link . '/../woocommerce/assets/js/select2/select2.js', array('jquery'), filemtime($folder_path.'/../woocommerce/assets/js/select2/select2.js'), true);
             wp_enqueue_script('mofw-script', $asset_file_link . '/assets/js/mofw.js', array('jquery', 'thickbox'), filemtime($folder_path.'/assets/js/mofw.js'), true);
 
-            $nonce = wp_create_nonce('mofw');
             wp_localize_script('mofw-script', 'mofw', array(
-                'nonce' => $nonce,
+                'nonce' => wp_create_nonce('mofw'),
                 'ajax_url' => admin_url('admin-ajax.php'),
+                'sp' => __('Choose Product', 'mofw'),
                 'dc' => __('Discount Coupon', 'mofw'),
                 'cc' => __('Coupon Code', 'mofw'),
                 'dt' => __('Discount in ' . get_option( 'woocommerce_currency' ), 'mofw') . ' ('.get_woocommerce_currency_symbol() . ')',
@@ -132,10 +112,25 @@ class CodersManualOrder {
 
     /**
      *
-     * Load html design form
+     * Create Manual order menu with cart icon
      *
      */
-    
+    public function create_dashboard_menu ( ) {
+        add_menu_page(
+            __('Manual Order Create', 'mofw'),
+            __('Manual Order', 'mofw'),
+            'manage_woocommerce',
+            'wc-manual-order',
+            [$this,'mofw_admin_page'],
+            'dashicons-cart'
+        );
+    }
+
+    /**
+     *
+     * Load html design form
+     *
+    */
 
     public function mofw_admin_page() {
         include('order-form.php');
@@ -145,9 +140,7 @@ class CodersManualOrder {
      *
      * Generate password for new user
      *
-     */
-    
-
+    */
     public function mofw_password_generate () {
         $nonce = sanitize_text_field($_POST['nonce']);
         $action = 'mofw';
@@ -189,17 +182,18 @@ class CodersManualOrder {
         if ($processed) {
             return $processed;
         }
+
         if ( wp_verify_nonce(sanitize_text_field($_POST['mofw_form_nonce']), 'mofw_form')) {
             if ( sanitize_text_field($_POST['customer_id']) == 0 ) {
                 $email = strtolower(sanitize_text_field($_POST['email']));
                 $first_name = sanitize_text_field($_POST['first_name']);
                 $last_name = sanitize_text_field($_POST['last_name']);
                 $password = sanitize_text_field($_POST['password']);
-                $phone_number = sanitize_text_field($_POST['phone']);
-                $customer = wp_create_user($email, $password, $email);
+                $billing_phone = sanitize_text_field($_POST['phone']);
+                $customer = wp_create_user( $email, $password, $email );
                 update_user_meta($customer, 'first_name', $first_name);
                 update_user_meta($customer, 'last_name', $last_name);
-                update_user_meta($customer, 'phone_number', $phone_number);
+                update_user_meta($customer, 'billing_phone', $billing_phone);
                 $customer = new WP_User($customer);
             } else {
                 $customer = new WP_User(sanitize_text_field($_POST['customer_id']));
@@ -212,16 +206,25 @@ class CodersManualOrder {
             $cart = new WC_Cart();
             WC()->cart = $cart;
             $cart->empty_cart();
-            $cart->add_to_cart(sanitize_text_field($_POST['item']), 1);
+
+            $selected_items = wc_clean($_POST['item']);
+            if ( !empty($selected_items) ) {
+                foreach ($selected_items as $item) {
+                    $cart->add_to_cart( $item, 1);
+                }
+            }
 
             $discount = trim(sanitize_text_field($_POST['discount']));
             if ($discount == '') {
                 $discount = 0;
             }
+
             $isCoupon = (isset($_POST['coupon'])) ? true : false;
 
             $checkout = WC()->checkout();
+
             $phone = sanitize_text_field($_POST['phone']);
+
             $order_id = $checkout->create_order(array(
                 'billing_phone' => $phone,
                 'billing_email' => $customer->user_email,
@@ -233,19 +236,20 @@ class CodersManualOrder {
             set_transient("mofw{$mofw_order_identifier}", $order_id, 60);
 
             $order = wc_get_order($order_id);
-            update_post_meta($order_id, '_customer_user', $customer->ID);
+            update_post_meta( $order_id, '_customer_user', $customer->ID);
             if ($isCoupon) {
                 $order->apply_coupon($discount);
             } elseif ($discount > 0) {
                 $total = $order->calculate_totals();
                 $order->set_discount_total($discount);
-                $order->set_total($total - floatval($discount));
+                $payable_amount = $total - floatval($discount);
+                $order->set_total( $payable_amount < 0 ? 0 : $payable_amount );
             }
             if (isset($_POST['note']) && !empty($_POST['note'])) {
                 $order_note = apply_filters('mofw_order_note', sanitize_text_field($_POST['note']), $order_id);
                 $order->add_order_note($order_note);
             }
-            $order_status = apply_filters('mofw_order_status', 'processing');
+            $order_status = apply_filters( 'mofw_order_status', 'processing' );
             $order->set_status($order_status);
             do_action('mofw_order_complete', $order_id);
             return $order->save();
@@ -269,7 +273,7 @@ class CodersManualOrder {
                     'id' => $user->ID,
                     'fn' => $user->first_name,
                     'ln' => $user->last_name,
-                    'pn' => get_user_meta($user->ID, 'phone_number', true)
+                    'pn' => get_user_meta($user->ID, 'billing_phone', true)
                 ));
             } else {
                 echo json_encode(
@@ -295,7 +299,7 @@ class CodersManualOrder {
 
     public function order_processing_complete ( $order_id ) {
         $order = wc_get_order($order_id);
-        $message =  __("<p>Your order number %s is now complete. Please click the next button to edit this order</p><p class='text-center'>%s</p>", 'mofw');
+        $message =  __("<p>Your order number %s is now processing. Please click the next button to edit this order</p><p class='text-center'>%s</p>", 'mofw');
         $order_button = sprintf("<a target='_blank' href='%s' id='mofw-edit-button' class='button button-primary button-hero'>%s %s</a>", $order->get_edit_order_url(), __('Edit Order # ', 'mofw'), $order_id);
 
         printf($message, $order_id, $order_button);
@@ -308,7 +312,8 @@ class CodersManualOrder {
      * @param mixed $links
      * @return array
      */
-    public function action_links( $links ) {
+    public function action_links( $links ) 
+    {
         return array_merge(
             [
                 '<a href="' . admin_url( 'admin.php?page=wc-manual-order' ) . '">' . __( 'Settings', 'mofw' ) . '</a>',
@@ -317,7 +322,19 @@ class CodersManualOrder {
             ], $links );
     }
 
-}
+    /*Copyright View Function*/
+    public function mofw_copyright_text()
+    {
+        $plugin = get_plugin_data( __FILE__ );
+        $text = sprintf(
+            /* translators: %1$s: plugin url, %2$s: Plugin Name */
+            __( 'Thank you for using our <a href="%1$s" target="_blank">%2$s</a> plugin.' ),
+            $plugin['PluginURI'],
+            __( $plugin['Name'] )
+        );
+        return '<span id="footer-thankyou"> '. $text .'</div>';
+    }
 
+}
 
 new CodersManualOrder();
