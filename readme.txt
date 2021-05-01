@@ -48,10 +48,10 @@ Manual order plugin would help users to avoid going through the hectic process o
 
 == Changelog ==
 
-=1.1.0=
+= 1.1.0 =
 * Multiple product order feature
 * hide password panel when a email user exist in system
 * address keyword deduct from name
 
-=1.0.0=
+= 1.0.0 =
 * March 06, 2021 - Initial Release
